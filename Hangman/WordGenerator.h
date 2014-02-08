@@ -4,6 +4,7 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>
+#include <random>
 class WordGenerator
 {
 public:

@@ -24,7 +24,7 @@ void Game::start()
 		update();
 		draw();
 	}
-
+	return;
 
 }
 
@@ -35,7 +35,7 @@ void Game::init()
 
 	if(!m_font.loadFromFile("opensans.ttf"))
 		return;
-	m_wordGenerator.init("words.txt");
+	m_wordGenerator.init("enable2k.txt");
 
 	m_menuText.setFont(m_font);
 	m_guessedLettersText.setFont(m_font);
@@ -54,7 +54,7 @@ void Game::init()
 	m_secretWordDisplay.resize(m_secretWord.size());
 	for(size_t i=0; i < m_secretWordDisplay.size(); i++)
 	{
-		m_secretWordDisplay[i] = '_';
+		m_secretWordDisplay[i] = '-';
 	}
 	m_secretWordText.setString(m_secretWordDisplay);
 
@@ -88,7 +88,7 @@ void Game::update()
 		case Gamestate::PLAYING:
 			if(event.type == sf::Event::KeyReleased)
 			{
-				if(event.key.code < 26)
+				if(event.key.code < 26 && event.key.code >= 0)
 				{
 					processLetter(KeyboardUtil::convertKeyCodeToChar(event.key.code));
 				}
@@ -137,11 +137,11 @@ void Game::update()
 				m_gamestate = Gamestate::LOST;
 		break;
 	case Game::WON:
-			m_winText.setString("You won!\nYou had to guess: " + std::to_string(m_timesGuessed) + "\nPress Enter to play again, or press escape to exit");
+		m_winText.setString("Correct!\nThe Word was: " + m_secretWord + "\nYou had to guess: " + std::to_string(m_timesGuessed) + " times\nPress Enter to play again, or press escape to exit");
 			m_winText.setPosition(400 - (m_winText.getGlobalBounds().width/2), 300 - (m_winText.getGlobalBounds().height/2));
 		break;
 	case Game::LOST:
-			m_lossText.setString("You lost!\nPress Enter to play again, or press escape to exit");
+		m_lossText.setString("You lost!\nThe word was: " + m_secretWord + "\nPress Enter to play again, or press escape to exit");
 			m_lossText.setPosition(400 - (m_lossText.getGlobalBounds().width/2), 300 - (m_lossText.getGlobalBounds().height/2));
 		break;
 	case Game::EXITING:
@@ -186,7 +186,7 @@ void Game::processLetter(char letter)
 	for(size_t i=0; i < m_secretWord.size(); i++)
 	{
 		if(m_secretWord[i] == letter)
-			m_secretWordDisplay[i] = letter; //Index * 2 since the spaces in the display strings are added at positions 1, 3, 5 and so on
+			m_secretWordDisplay[i] = letter;
 	}
 	//If the letter is incorrect, add it to guessedLetters and increment number of guesses
 	if(m_secretWord.find(letter) == std::string::npos)
@@ -221,11 +221,12 @@ void Game::resetGame()
 	m_secretWordDisplay.resize(m_secretWord.size());
 	for(size_t i=0; i < m_secretWordDisplay.size(); i++)
 	{
-		m_secretWordDisplay[i] = '_';
+		m_secretWordDisplay[i] = '-';
 	}
 	m_secretWordText.setString(m_secretWordDisplay);
 
 	m_visualCountdown.reset();
+	m_timesGuessed = 0;
 
 	m_gamestate = Gamestate::MENU;
 }

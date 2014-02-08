@@ -69,6 +69,19 @@ void VisualCountdown::init(sf::Vector2f position)
 	rope->setFillColor(sf::Color::White);
 	rope->setPosition(position + sf::Vector2f(80, 0));
 	m_shapes[4] = rope;
+
+	//The Head, a CircleShape with outline
+	sf::CircleShape *head = new sf::CircleShape();
+	head->setRadius(20.0f);
+	head->setOutlineThickness(3.0f);
+	head->setOutlineColor(sf::Color::White);
+	head->setFillColor(sf::Color::Black);
+	head->setPosition(position + sf::Vector2f(63, 50));
+	m_shapes[5] = head;
+
+	//The Body, a Rectangel
+	sf::RectangleShape *body = new sf::RectangleShape();
+	body->setSize(sf::Vector2f(10, 40));
 }
 void VisualCountdown::update()
 {

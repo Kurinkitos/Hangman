@@ -12,5 +12,5 @@ KeyboardUtil::~KeyboardUtil(void)
 
 char KeyboardUtil::convertKeyCodeToChar(int code)
 {
-	return (char)(code+65);
+	return (char)(code+97);
 }

@@ -12,7 +12,7 @@ WordGenerator::~WordGenerator(void)
 
 void WordGenerator::init(std::string filename)
 {
-	m_words.resize(256); //Make it big just to sure
+	m_words.resize(200000); //Make it big just to sure
 
 	std::ifstream file(filename);
 	if(file.is_open())
@@ -29,13 +29,18 @@ void WordGenerator::init(std::string filename)
 	{
 		std::cout << "Could not open wordlist " << filename << std::endl;
 	}
-	srand(time(NULL));
+	file.close();
 }
 
 
 std::string WordGenerator::getWord()
 {
-	int index = rand() % m_words.size();
-	std::cout << index << std::endl;
-	return m_words[index];
+	const int min = 0;
+	const int max = m_words.size();
+	std::default_random_engine generator;
+	generator.seed(time(NULL));
+	std::uniform_int_distribution<int> distribution(min,max);
+	int random_int = distribution(generator);  // generate random int flat in [min, max]
+	//std::cout << m_words[random_int] << std::endl;
+	return m_words[random_int];
 }
